@@ -79,7 +79,7 @@ public class ScriptParser
                         final Character character = characterMap.get(characterName.toLowerCase());
                         if (character != null)
                         {
-                            character.addDialogue(dialogue);
+                            character.addDialogue(dialogue.replace("’", "'"));
                         }
                     }
                 }
