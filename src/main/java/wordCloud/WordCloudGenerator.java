@@ -1,9 +1,7 @@
 package wordCloud;
 
 import com.google.common.collect.Lists;
-import com.kennycason.kumo.CollisionMode;
-import com.kennycason.kumo.WordCloud;
-import com.kennycason.kumo.WordFrequency;
+import com.kennycason.kumo.*;
 import com.kennycason.kumo.bg.CircleBackground;
 import com.kennycason.kumo.font.scale.SqrtFontScalar;
 import com.kennycason.kumo.nlp.FrequencyAnalyzer;
@@ -44,5 +42,23 @@ public class WordCloudGenerator
         wordCloud.setFontScalar(new SqrtFontScalar(10, 50));
         wordCloud.build(wordFrequencies);
         wordCloud.writeToFile(character.getName() + ".png");
+    }
+
+    public void createPolarityWordCloud(Character character1, Character character2)
+    {
+        final FrequencyAnalyzer frequencyAnalyzer = new FrequencyAnalyzer();
+        frequencyAnalyzer.setWordFrequenciesToReturn(750);
+        frequencyAnalyzer.setMinWordLength(4);
+        frequencyAnalyzer.setStopWords(stopWords);
+
+        final List<WordFrequency> wordFrequencies = frequencyAnalyzer.load(character1.getDialogue());
+        final List<WordFrequency> wordFrequencies2 = frequencyAnalyzer.load(character2.getDialogue());
+        final Dimension dimension = new Dimension(600, 600);
+        final PolarWordCloud wordCloud = new PolarWordCloud(dimension, CollisionMode.PIXEL_PERFECT, PolarBlendMode.BLUR);
+        wordCloud.setPadding(2);
+        wordCloud.setBackground(new CircleBackground(300));
+        wordCloud.setFontScalar(new SqrtFontScalar(10, 40));
+        wordCloud.build(wordFrequencies, wordFrequencies2);
+        wordCloud.writeToFile(character1.getName() + " - " + character2.getName() + ".png");
     }
 }
